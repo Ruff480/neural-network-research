@@ -58,6 +58,27 @@ class Initialization:
         return df
 
 
+
+def CreateNNConfig(num_nodes, num_layers):
+    config = [0]*num_layers
+    current_layer = 0
+    while(current_layer != num_layers):
+        nodes_of_layer = int(num_nodes/2)
+        config[current_layer] = nodes_of_layer
+        num_nodes = num_nodes - nodes_of_layer
+        current_layer = current_layer + 1
+    current_layer = 0
+    while(num_nodes > 0):
+        config[current_layer] = config[current_layer] + 1
+        num_nodes = num_nodes - 1
+        if(current_layer == num_layers-1):
+            current_layer = 0
+        else:
+            current_layer = current_layer + 1
+    return config
+
+
+
 kdd_col_names = ["duration", "protocol_type", "service", "flag", "src_bytes",
                  "dst_bytes", "land", "wrong_fragment", "urgent", "hot", "num_failed_logins",
                  "logged_in", "num_compromised", "root_shell", "su_attempted", "num_root",
@@ -71,8 +92,10 @@ kdd_col_names = ["duration", "protocol_type", "service", "flag", "src_bytes",
 
 
 # main code #
-file = open("kddcup.data.corrected")
-kddcup = Initialization(file)
-kddcup.import_data(kdd_col_names)
-kdd_labels = pd.read_csv(open("labels.csv"))
-kdd_data = pd.read_csv(open("out.csv"))
+#file = open("kddcup.data.corrected")
+#kddcup = Initialization(file)
+#kddcup.import_data(kdd_col_names)
+#kdd_labels = pd.read_csv(open("labels.csv"))
+#kdd_data = pd.read_csv(open("out.csv"))
+actual_config = CreateNNConfig(16, 2)
+print(actual_config)
